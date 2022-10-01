@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"source/go-learn/greetings"
+	"github.com/franktore/go-learn/greetings"
 )
 
 func main() {
