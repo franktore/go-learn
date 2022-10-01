@@ -1,4 +1,4 @@
-module source/go-learn
+module github.com/franktore/go-learn
 
 go 1.18
 

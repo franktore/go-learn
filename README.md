@@ -40,11 +40,13 @@ designed for problem-solving
     │   │   go.sum      | the main
     │   │   helper.go   | package
     |   |   myapp.go    | 
-    │   └───greetings
-    │       │   hello.go    |
-    │       │   goodbye.go  | the greetings
-    │       │   ...         | package
-    │
+    |   └───pkg
+    │       └───greetings
+    │       |   │   hello.go    |
+    │       |   │   goodbye.go  | the greetings
+    │       |   │   ...         | package
+    │       | ....
+    |
     └───other-project
         │   go.mod
         │   go.sum
