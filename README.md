@@ -17,8 +17,10 @@ Go or GoLang is a programming language originally developed by Google that uses 
 * set GOPATH=/home/(somewhere)/golang
 * verify installation `go version`
 * check go env variables `go env`
+* list available commands `go help`
+* info pages for a specific command `go help <command>`
 * ...
-* ready to code
+* ready to code?
 * ...
 
 ### <span style="color:yellow">packages and modules</span>
@@ -139,7 +141,54 @@ To run your application `go run .`
 Wont work because missing dependencies
 To fetch dependencies `go get .`
 
+If you have a local copy of a dependency you can switch to that copy using `replace`: 
+<span style="color:green">src/go-proxy/go.mod</span>
+```
+module github.com/franktore/go-proxy
+
+go 1.18
+
+replace github.com/franktore/go-learn => ../go-learn
+
+require (
+    github.com/franktore/go-learn v0.1.0
+	golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c // indirect
+	rsc.io/quote v1.5.2 // indirect
+	rsc.io/sampler v1.3.0 // indirect
+)
+```
+
+## <span style="color:yellow">unit tests</span>
+
+Go has build-in support for unit testing.
+The package you'll want to import is called `testing`. The command you want to use is `go test`. The naming convention you'll want to use for test files is `<some>_test.go`.
+
+## <span style="color:yellow">compile, install and run</span>
+
+The `go run` command is a useful shortcut for compiling and running a program during development, but it doesn't create a binary executable.
+
+There are two commands that can be used; `go build` will compile the pacckages and their dependencies, but won't install the results, while
+`go install` will compile and install the packages.
+
+To build for specific `OS` and architecture set the go env variables like
+
+```
+env GOOS=target-OS GOARCH=target-architecture
+go build package-import-path
+```
+
+For more info on the where and how of installation can be found in the linked resources.
+
+## <span style="color:red">Creating a RESTful-API in GO</span>
+
+Time to do something slighly more useful.
+
+Implement a Greetings REST-API for creating, updating, deleting and retrieving greetings.
+
+
 # resources
 * https://go.dev/doc/install
 * https://go.dev/doc/tutorial/getting-started
+* https://go.dev/doc/tutorial/compile-install
 * https://encore.dev/guide/go.mod
+* https://www.digitalocean.com/community/tutorials/how-to-build-go-executables-for-multiple-platforms-on-ubuntu-16-04

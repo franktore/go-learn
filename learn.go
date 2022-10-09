@@ -8,6 +8,8 @@ import (
 	"reflect"
 
 	"github.com/franktore/go-learn/pkg/greetings"
+	"github.com/franktore/go-learn/pkg/handlers"
+	"github.com/gin-gonic/gin"
 )
 
 const log_prefix string = "greetings: "
@@ -32,12 +34,26 @@ func main() {
 	// If an error was returned, print it to the console and
 	// exit the program.
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
 	}
 
 	// If no error was returned, print the returned message
 	// to the console.
 	fmt.Println(message)
+
+	handlers.Name = name
+	router := setup_router()
+	router.Run(":8080")
+}
+
+func setup_router() *gin.Engine {
+	router := gin.Default()
+	router.GET("/greetings", handlers.GetAllGreetings)
+	router.POST("/greetings", handlers.AddGreeting)
+	router.GET("/greetings/:id", handlers.GetGreetingById)
+	router.PATCH("/greetings/:id", handlers.UpdateGreeting)
+	router.DELETE("/greetings/:id", handlers.DeleteGreeting)
+	return router
 }
 
 func declare_random_stuff() {
