@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+  api:
+    build:
+      context: .
+      args:
+        ENV: local
+        http_proxy: "${HTTP_PREFIX}${HTTP_PROXY}"
+        https_proxy: "${HTTP_PREFIX}${HTTPS_PROXY}"
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    environment:
+      - "http_proxy=${HTTP_PREFIX}${HTTP_PROXY}"
+      - "https_proxy=${HTTP_PREFIX}${HTTPS_PROXY}"
+      - "no_proxy=${NO_PROXY}"
