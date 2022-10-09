@@ -16,3 +16,5 @@ services:
       - "http_proxy=${HTTP_PREFIX}${HTTP_PROXY}"
       - "https_proxy=${HTTP_PREFIX}${HTTPS_PROXY}"
       - "no_proxy=${NO_PROXY}"
+    # volumes:
+    #   - .:/app

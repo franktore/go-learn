@@ -1,11 +1,12 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.16-alpine
+FROM golang:1.19-bullseye
 
 WORKDIR /app
 
-RUN apk update \
-    && apk add curl git wget
+RUN apt-get update \
+    && apt-get install -y curl git wget bash \
+    && apt-get upgrade -y
 
 # Install go-learn
 RUN cd /tmp && \
@@ -16,10 +17,9 @@ RUN cd /tmp && \
          | tr -d \, \
          | wget -qi - && \
     tar --strip-components=1 -xvf v0.1* && \
-    cp releases/go-learn /opt && \
-    cp entry_point.sh /app && \
+    cp releases/go-learn /app && \
     rm -rf /tmp/*
 
-ENV PATH="/opt:$PATH"
-RUN echo $PATH
-CMD ["/app/entry_point.sh"]
+ENV PATH="/app:$PATH"
+
+CMD [ "go-learn" ]
