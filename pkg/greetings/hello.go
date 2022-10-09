@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
-
-	"rsc.io/quote"
 )
 
 func Hello(name string) (string, error) {
@@ -17,10 +15,9 @@ func Hello(name string) (string, error) {
 
 	// Return a greeting that embeds the name in a message.
 	message := fmt.Sprintf(randomFormat(), name)
-	fmt.Println(message)
 
-	ret := quote.Go()
-	return ret, nil
+	// ret := quote.Go()
+	return message, nil
 }
 
 // init sets initial values for variables used in the function.
