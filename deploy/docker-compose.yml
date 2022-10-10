@@ -2,12 +2,15 @@ version: "3.3"
 
 services:
   api:
+    image: go-learn
+    container_name: go-learn-api
     build:
       context: .
       args:
         ENV: local
         http_proxy: "${HTTP_PREFIX}${HTTP_PROXY}"
         https_proxy: "${HTTP_PREFIX}${HTTPS_PROXY}"
+        GIT_USERNAME: "${GIT_USERNAME}"
     expose:
       - "8080"
     ports:
@@ -16,5 +19,3 @@ services:
       - "http_proxy=${HTTP_PREFIX}${HTTP_PROXY}"
       - "https_proxy=${HTTP_PREFIX}${HTTPS_PROXY}"
       - "no_proxy=${NO_PROXY}"
-    # volumes:
-    #   - .:/app

@@ -1,0 +1,14 @@
+# Copied from https://github.com/Azure-App-Service/python/blob/master/3.6.6/sshd_config
+# According to https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ssh-support
+
+Port 			        2222
+ListenAddress 		    0.0.0.0
+LoginGraceTime 		    180
+X11Forwarding 		    yes
+Ciphers                 aes128-cbc,3des-cbc,aes256-cbc
+MACs                    hmac-sha1,hmac-sha1-96
+StrictModes 		    yes
+SyslogFacility 		    DAEMON
+PasswordAuthentication 	yes
+PermitEmptyPasswords 	no
+PermitRootLogin 	    yes
