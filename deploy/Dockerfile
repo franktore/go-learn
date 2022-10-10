@@ -13,7 +13,7 @@ ENV PATH="/app:$PATH"
 #     && apt-get upgrade -y
 
 RUN apk update \
-    && apk add --no-cache curl git wget bash openssh-server supervisor
+    && apk add --no-cache curl git wget bash openssh-server supervisor && echo "root:Docker!" | chpasswd
 
 # create and set user (student) permissions
 # RUN adduser -G www-data student --system --no-create-home && \
@@ -40,6 +40,9 @@ COPY entry_point.sh .
 COPY Dockerfile .
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY sshd_config /etc/ssh/sshd_config
+
+RUN cd /etc/ssh/ && \
+    ssh-keygen -A
 
 EXPOSE 80 2222
 
