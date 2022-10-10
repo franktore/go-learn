@@ -12,9 +12,9 @@ services:
         https_proxy: "${HTTP_PREFIX}${HTTPS_PROXY}"
         GIT_USERNAME: "${GIT_USERNAME}"
     expose:
-      - "8080"
+      - "80"
     ports:
-      - "8080:8080"
+      - "80:80"
     environment:
       - "http_proxy=${HTTP_PREFIX}${HTTP_PROXY}"
       - "https_proxy=${HTTP_PREFIX}${HTTPS_PROXY}"
