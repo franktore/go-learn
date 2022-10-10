@@ -48,11 +48,16 @@ func main() {
 
 func setup_router() *gin.Engine {
 	router := gin.Default()
+	router.LoadHTMLGlob("templates/*.html")
 	router.GET("/greetings", handlers.GetAllGreetings)
 	router.POST("/greetings", handlers.AddGreeting)
 	router.GET("/greetings/:id", handlers.GetGreetingById)
 	router.PATCH("/greetings/:id", handlers.UpdateGreeting)
 	router.DELETE("/greetings/:id", handlers.DeleteGreeting)
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(200, "index.html", gin.H{
+			"title": "Home Page"})
+	})
 	return router
 }
 
