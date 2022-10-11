@@ -15,6 +15,9 @@ import (
 
 const log_prefix string = "greetings: "
 
+var WORKDIR string = "./"
+var PORT string = ":8080"
+
 func main() {
 	// Set properties of the predefined Logger, including
 	// the log entry prefix and a flag to disable printing
@@ -43,15 +46,20 @@ func main() {
 	fmt.Println(message)
 
 	handlers.Name = name
+
+	// comment out the following when debugging
+	WORKDIR = "/app/go-learn/"
+	PORT = ":80"
+
 	router := setup_router()
-	router.Run(":80")
+	router.Run(PORT)
 }
 
 func setup_router() *gin.Engine {
 	router := gin.Default()
 	router.Delims("{{", "}}")
-	router.Use(static.Serve("/assets", static.LocalFile("./assets", false)))
-	router.LoadHTMLGlob("templates/*.html")
+	router.Use(static.Serve("/assets", static.LocalFile(WORKDIR+"assets", false)))
+	router.LoadHTMLGlob(WORKDIR + "templates/*.html")
 	router.GET("/greetings", handlers.GetAllGreetings)
 	router.POST("/greetings", handlers.AddGreeting)
 	router.GET("/greetings/:id", handlers.GetGreetingById)
