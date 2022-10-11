@@ -37,7 +37,6 @@ RUN git clone https://github.com/franktore/go-learn.git
 RUN cd go-learn && \
     go build -o /go/bin/go-learn
 COPY entry_point.sh .
-COPY Dockerfile .
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY sshd_config /etc/ssh/sshd_config
 
