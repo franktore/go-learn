@@ -192,3 +192,4 @@ Implement a Greetings REST-API for creating, updating, deleting and retrieving g
 * https://go.dev/doc/tutorial/compile-install
 * https://encore.dev/guide/go.mod
 * https://www.digitalocean.com/community/tutorials/how-to-build-go-executables-for-multiple-platforms-on-ubuntu-16-04
+* https://jonathanmh.com/creating-simple-markdown-blog-go-gin/

@@ -44,7 +44,7 @@ func main() {
 
 	handlers.Name = name
 	router := setup_router()
-	router.Run(":8080")
+	router.Run(":80")
 }
 
 func setup_router() *gin.Engine {
