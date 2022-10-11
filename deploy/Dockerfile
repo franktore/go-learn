@@ -13,7 +13,7 @@ ENV PATH="/app:$PATH"
 #     && apt-get upgrade -y
 
 RUN apk update \
-    && apk add --no-cache curl git wget bash openssh-server supervisor && echo "root:Docker!" | chpasswd
+    && apk add --no-cache curl git wget bash openssh-server supervisor vim && echo "root:Docker!" | chpasswd
 
 # create and set user (student) permissions
 # RUN adduser -G www-data student --system --no-create-home && \

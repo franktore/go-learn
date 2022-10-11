@@ -11,6 +11,8 @@ import (
 	"github.com/russross/blackfriday"
 )
 
+var FILEDIR string = "./"
+
 type Post struct {
 	Title   string
 	Content template.HTML
@@ -24,7 +26,7 @@ func GetRoot(c *gin.Context) {
 func GetRootMd(c *gin.Context) {
 	var posts []string
 
-	files, err := ioutil.ReadDir("./")
+	files, err := ioutil.ReadDir(FILEDIR)
 	if err != nil {
 		fmt.Println(err)
 		c.HTML(http.StatusServiceUnavailable, "error.tmpl.html", nil)
@@ -47,7 +49,7 @@ func GetRootMd(c *gin.Context) {
 func GetMarkdown(c *gin.Context) {
 	postName := c.Param("postName")
 
-	mdfile, err := ioutil.ReadFile("./" + postName)
+	mdfile, err := ioutil.ReadFile(FILEDIR + postName)
 
 	if err != nil {
 		fmt.Println(err)

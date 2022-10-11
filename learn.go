@@ -18,6 +18,15 @@ const log_prefix string = "greetings: "
 var WORKDIR string = "./"
 var PORT string = ":8080"
 
+func init() {
+	fmt.Println("init")
+
+	// comment out the following when debugging
+	WORKDIR = "/app/go-learn/"
+	PORT = ":80"
+	handlers.FILEDIR = WORKDIR
+}
+
 func main() {
 	// Set properties of the predefined Logger, including
 	// the log entry prefix and a flag to disable printing
@@ -46,10 +55,6 @@ func main() {
 	fmt.Println(message)
 
 	handlers.Name = name
-
-	// comment out the following when debugging
-	WORKDIR = "/app/go-learn/"
-	PORT = ":80"
 
 	router := setup_router()
 	router.Run(PORT)
