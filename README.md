@@ -1,4 +1,4 @@
-# go-learn
+# ![Go](./assets/215px-Go_Logo_Blue.svg.png) LEARN
 Go or GoLang is a programming language originally developed by Google that uses high-level syntax similar to scripting languages.
 ## <span style="color:yellow">why go?</span>
 * future-proof
@@ -186,7 +186,7 @@ Time to do something slighly more useful.
 Implement a Greetings REST-API for creating, updating, deleting and retrieving greetings.
 
 
-# resources
+## resources
 * https://go.dev/doc/install
 * https://go.dev/doc/tutorial/getting-started
 * https://go.dev/doc/tutorial/compile-install

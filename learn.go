@@ -9,6 +9,7 @@ import (
 
 	"github.com/franktore/go-learn/pkg/greetings"
 	"github.com/franktore/go-learn/pkg/handlers"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -43,21 +44,22 @@ func main() {
 
 	handlers.Name = name
 	router := setup_router()
-	router.Run(":80")
+	router.Run(":8080")
 }
 
 func setup_router() *gin.Engine {
 	router := gin.Default()
+	router.Delims("{{", "}}")
+	router.Use(static.Serve("/assets", static.LocalFile("./assets", false)))
 	router.LoadHTMLGlob("templates/*.html")
 	router.GET("/greetings", handlers.GetAllGreetings)
 	router.POST("/greetings", handlers.AddGreeting)
 	router.GET("/greetings/:id", handlers.GetGreetingById)
 	router.PATCH("/greetings/:id", handlers.UpdateGreeting)
 	router.DELETE("/greetings/:id", handlers.DeleteGreeting)
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", gin.H{
-			"title": "Home Page"})
-	})
+
+	router.GET("/", handlers.GetRootMd)
+	router.GET("/:postName", handlers.GetMarkdown)
 	return router
 }
 
