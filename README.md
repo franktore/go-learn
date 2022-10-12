@@ -195,3 +195,4 @@ Implement a Greetings REST-API for creating, updating, deleting and retrieving g
 * https://levelup.gitconnected.com/using-modules-and-packages-in-go-36a418960556
 * https://www.digitalocean.com/community/tutorials/how-to-build-go-executables-for-multiple-platforms-on-ubuntu-16-04
 * https://jonathanmh.com/creating-simple-markdown-blog-go-gin/
+* https://github.com/Skarlso/google-oauth-go-sample
