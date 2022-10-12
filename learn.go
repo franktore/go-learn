@@ -9,7 +9,9 @@ import (
 
 	"github.com/franktore/go-learn/pkg/greetings"
 	"github.com/franktore/go-learn/pkg/handlers"
+	"github.com/franktore/go-learn/pkg/middleware"
 	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,9 +24,9 @@ func init() {
 	fmt.Println("init")
 
 	// comment out the following when debugging
-	WORKDIR = "/app/go-learn/"
-	PORT = ":80"
-	handlers.FILEDIR = WORKDIR
+	// WORKDIR = "/app/go-learn/"
+	// PORT = ":80"
+	// handlers.FILEDIR = WORKDIR
 }
 
 func main() {
@@ -33,6 +35,8 @@ func main() {
 	// the time, source file, and line number.
 	log.SetPrefix(log_prefix)
 	log.SetFlags(0)
+
+	gin.SetMode(gin.ReleaseMode)
 
 	// declare name variable
 	name := ""
@@ -56,13 +60,30 @@ func main() {
 
 	handlers.Name = name
 
-	router := setup_router()
-	router.Run(PORT)
+	router := setup_router_auth()
+	if err := router.Run(PORT); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func setup_router() *gin.Engine {
 	router := gin.Default()
 	router.Delims("{{", "}}")
+	token, _ := handlers.RandToken(64)
+	store := sessions.NewCookieStore([]byte(token))
+	store.Options(sessions.Options{
+		Path:   "/",
+		MaxAge: 86400 * 7,
+	})
+	router.Use(sessions.Sessions("authsession", store))
+
+	// Global middleware
+	// Logger middleware will write the logs to gin.DefaultWriter even if you set with GIN_MODE=release.
+	// By default gin.DefaultWriter = os.Stdout
+	router.Use(gin.Logger())
+	// Recovery middleware recovers from any panics and writes a 500 if there was one.
+	router.Use(gin.Recovery())
+
 	router.Use(static.Serve("/assets", static.LocalFile(WORKDIR+"assets", false)))
 	router.LoadHTMLGlob(WORKDIR + "templates/*.html")
 	router.GET("/greetings", handlers.GetAllGreetings)
@@ -73,6 +94,51 @@ func setup_router() *gin.Engine {
 
 	router.GET("/", handlers.GetRootMd)
 	router.GET("/:postName", handlers.GetMarkdown)
+	return router
+}
+
+func setup_router_auth() *gin.Engine {
+	// Creates a router without any middleware by default
+	router := gin.New()
+	token, err := handlers.RandToken(64)
+	if err != nil {
+		log.Fatal("unable to generate random token: ", err)
+	}
+	store := sessions.NewCookieStore([]byte(token))
+	store.Options(sessions.Options{
+		Path:   "/",
+		MaxAge: 86400 * 7,
+	})
+	router.Use(sessions.Sessions("authsession", store))
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
+	router.Delims("{{", "}}")
+	router.LoadHTMLGlob(WORKDIR + "templates/*.html")
+	router.Use(static.Serve("/assets", static.LocalFile(WORKDIR+"assets", false)))
+
+	router.GET("/login", handlers.LoginHandler)
+	router.GET("/auth", handlers.AuthHandler)
+	router.GET("/", handlers.GetRootMd)
+	router.GET("/:postName", handlers.GetMarkdown)
+
+	router.Use(middleware.AuthorizeRequest())
+
+	// Authorization group
+	// authorized := r.Group("/greetings", AuthRequired())
+	// exactly the same as:
+	authorized := router.Group("/greetings")
+
+	// per group middleware! in this case we use the custom created
+	// AuthRequired() middleware just in the "authorized" group.
+	authorized.Use(middleware.AuthorizeRequest())
+	{
+		router.GET("/greetings", handlers.GetAllGreetings)
+		router.POST("/greetings", handlers.AddGreeting)
+		router.GET("/greetings/:id", handlers.GetGreetingById)
+		router.PATCH("/greetings/:id", handlers.UpdateGreeting)
+		router.DELETE("/greetings/:id", handlers.DeleteGreeting)
+	}
+
 	return router
 }
 

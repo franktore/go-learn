@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,9 +27,16 @@ func getMockGreeting(c *gin.Context) string {
 			"Did you specify `id` as a positive integer?", Name)
 	}
 
-	name, exists := c.GetQuery("name")
-	if exists {
-		Name = name
+	session := sessions.Default(c)
+	v := session.Get("user-id")
+
+	if v == nil {
+		name, exists := c.GetQuery("name")
+		if exists {
+			Name = name
+		}
+	} else {
+		Name = v.(string)
 	}
 
 	_, greeting, err := getGreetingById(id)
