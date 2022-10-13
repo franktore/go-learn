@@ -72,9 +72,9 @@ func main() {
 
 	// If an error was returned, print it to the console and
 	// exit the program.
-	if err != nil {
-		log.Fatal(err)
-	}
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// If no error was returned, print the returned message
 	// to the console.
