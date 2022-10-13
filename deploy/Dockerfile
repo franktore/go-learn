@@ -45,14 +45,14 @@ RUN cd go-learn && \
 COPY entry_point.sh .
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY sshd_config /etc/ssh/sshd_config
-COPY creds.json /app/creds.json
+# COPY creds.json /app/creds.json
 COPY prod_config.json /app/prod_conf.json
 COPY dev_conf.json /app/dev_conf.json
 
 RUN cd /etc/ssh/ && \
     ssh-keygen -A
 
-EXPOSE 80 8080 2222
+EXPOSE 80 2222
 
 RUN chmod +x entry_point.sh
 
