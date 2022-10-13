@@ -46,7 +46,7 @@ COPY entry_point.sh .
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY sshd_config /etc/ssh/sshd_config
 COPY creds.json /app/creds.json
-COPY prod_conf.json /app/prod_conf.json
+COPY prod_config.json /app/prod_conf.json
 COPY dev_conf.json /app/dev_conf.json
 
 RUN cd /etc/ssh/ && \
