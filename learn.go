@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math"
 	"os"
@@ -17,16 +19,42 @@ import (
 
 const log_prefix string = "greetings: "
 
-var WORKDIR string = "./"
-var PORT string = ":8080"
+var config = Configuration{}
+
+type Configuration struct {
+	WORKDIR string
+	HOST    string
+	PORT    string
+	AUTH    bool
+}
 
 func init() {
 	fmt.Println("init")
-
+	config, _ = GetConfig()
 	// comment out the following when debugging
 	// WORKDIR = "/app/go-learn/"
 	// PORT = ":80"
 	// handlers.FILEDIR = WORKDIR
+}
+
+func GetConfig(params ...string) (Configuration, error) {
+	configuration := Configuration{}
+	env := "dev"
+	// gin.SetMode(gin.ReleaseMode)
+	if len(params) > 0 {
+		env = params[0]
+	}
+	fileName := fmt.Sprintf("./%s_conf.json", env)
+	file, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		log.Printf("File error: %v\n", err)
+		os.Exit(1)
+	}
+	if err := json.Unmarshal(file, &configuration); err != nil {
+		log.Println("unable to marshal data")
+	}
+
+	return configuration, err
 }
 
 func main() {
@@ -35,8 +63,6 @@ func main() {
 	// the time, source file, and line number.
 	log.SetPrefix(log_prefix)
 	log.SetFlags(0)
-
-	gin.SetMode(gin.ReleaseMode)
 
 	// declare name variable
 	name := ""
@@ -60,8 +86,8 @@ func main() {
 
 	handlers.Name = name
 
-	router := setup_router_auth()
-	if err := router.Run(PORT); err != nil {
+	router := setup_router()
+	if err := router.Run(":" + config.PORT); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -84,8 +110,8 @@ func setup_router() *gin.Engine {
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
 	router.Use(gin.Recovery())
 
-	router.Use(static.Serve("/assets", static.LocalFile(WORKDIR+"assets", false)))
-	router.LoadHTMLGlob(WORKDIR + "templates/*.html")
+	router.Use(static.Serve("/assets", static.LocalFile(config.WORKDIR+"assets", false)))
+	router.LoadHTMLGlob(config.WORKDIR + "templates/*.html")
 	router.GET("/greetings", handlers.GetAllGreetings)
 	router.POST("/greetings", handlers.AddGreeting)
 	router.GET("/greetings/:id", handlers.GetGreetingById)
@@ -113,8 +139,8 @@ func setup_router_auth() *gin.Engine {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.Delims("{{", "}}")
-	router.LoadHTMLGlob(WORKDIR + "templates/*.html")
-	router.Use(static.Serve("/assets", static.LocalFile(WORKDIR+"assets", false)))
+	router.LoadHTMLGlob(config.WORKDIR + "templates/*.html")
+	router.Use(static.Serve("/assets", static.LocalFile(config.WORKDIR+"assets", false)))
 
 	router.GET("/login", handlers.LoginHandler)
 	router.GET("/auth", handlers.AuthHandler)
