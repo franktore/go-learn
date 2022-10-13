@@ -178,7 +178,6 @@ func setup_router_auth() *gin.Engine {
 }
 
 func declare_random_stuff() {
-	fmt.Println("init")
 	// some common ways to declare variables
 	// you wont get far without them
 	var a = "a"
