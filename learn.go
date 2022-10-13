@@ -40,7 +40,7 @@ func GetConfig(params ...string) (Configuration, error) {
 	if len(params) > 0 {
 		env = params[0]
 	}
-	fileName := fmt.Sprintf("./%s_conf.json", env)
+	fileName := fmt.Sprintf("/etc/%s_conf.json", env)
 	file, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Printf("File error: %v\n", err)
@@ -68,7 +68,7 @@ func main() {
 		name = argsWithoutProg[0]
 	}
 
-	message, err := greetings.Hello(name)
+	message, _ := greetings.Hello(name)
 
 	// If an error was returned, print it to the console and
 	// exit the program.
@@ -83,7 +83,7 @@ func main() {
 	handlers.Name = name
 
 	var router *gin.Engine
-	if _, err := os.Stat("./creds.json"); err == nil {
+	if _, err := os.Stat("/etc/creds.json"); err == nil {
 		fmt.Printf("setup router with authent\n")
 		router = setup_router_auth()
 	} else {

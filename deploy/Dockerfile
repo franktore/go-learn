@@ -39,9 +39,9 @@ RUN cd go-learn && \
 COPY entry_point.sh .
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY sshd_config /etc/ssh/sshd_config
-COPY creds.json /go/bin/.
-COPY prod_conf.json /go/bin/.
-COPY dev_conf.json /go/bin/.
+COPY creds.json /etc/creds.json
+COPY prod_conf.json /etc/prod_conf.json
+COPY dev_conf.json /etc/dev_conf.json
 
 RUN cd /etc/ssh/ && \
     ssh-keygen -A
