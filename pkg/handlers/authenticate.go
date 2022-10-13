@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/franktore/go-learn/pkg/structs"
 	"github.com/gin-gonic/contrib/sessions"
@@ -50,10 +51,17 @@ func init() {
 		return
 	}
 
+	var redirectURL string
+	if _, err := os.Stat(CONFIGDIR + "prod_conf.json"); err == nil {
+		redirectURL = "https://go-learn-greetings.azurewebsites.net/auth"
+	} else {
+		redirectURL = "http://localhost:8080/auth"
+	}
+
 	conf = &oauth2.Config{
 		ClientID:     cred.Cid,
 		ClientSecret: cred.Csecret,
-		RedirectURL:  "http://localhost:8080/auth",
+		RedirectURL:  redirectURL,
 		Scopes: []string{
 			"https://www.googleapis.com/auth/userinfo.email", // You have to select your own scope from here -> https://developers.google.com/identity/protocols/googlescopes#google_sign-in
 		},

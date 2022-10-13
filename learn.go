@@ -41,7 +41,14 @@ func init() {
 
 func GetConfig(params ...string) (Configuration, error) {
 	configuration := Configuration{}
-	env := "dev"
+	var env string
+	if _, err := os.Stat(CONFIGDIR + "prod_conf.json"); err == nil {
+		fmt.Printf("PROD ENV\n")
+		env = "prod"
+	} else {
+		fmt.Printf("DEV ENV\n")
+		env = "dev"
+	}
 	// gin.SetMode(gin.ReleaseMode)
 	if len(params) > 0 {
 		env = params[0]

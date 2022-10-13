@@ -33,6 +33,7 @@ RUN apk update \
 #     cp releases/go-learn /app && \
 #     cp -r deploy/ /app/config && \
 #     rm -rf /tmp/*
+
 RUN git clone https://github.com/franktore/go-learn.git
 RUN cd go-learn && \
     go build -o /go/bin/go-learn && \
@@ -45,7 +46,7 @@ COPY entry_point.sh .
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY sshd_config /etc/ssh/sshd_config
 COPY creds.json /app/creds.json
-# COPY prod_conf.json /app/prod_conf.json
+COPY prod_conf.json /app/prod_conf.json
 COPY dev_conf.json /app/dev_conf.json
 
 RUN cd /etc/ssh/ && \
