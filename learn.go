@@ -31,10 +31,6 @@ type Configuration struct {
 func init() {
 	fmt.Println("init")
 	config, _ = GetConfig()
-	// comment out the following when debugging
-	// WORKDIR = "/app/go-learn/"
-	// PORT = ":80"
-	// handlers.FILEDIR = WORKDIR
 }
 
 func GetConfig(params ...string) (Configuration, error) {
@@ -77,7 +73,7 @@ func main() {
 	// If an error was returned, print it to the console and
 	// exit the program.
 	if err != nil {
-		// log.Fatal(err)
+		log.Fatal(err)
 	}
 
 	// If no error was returned, print the returned message
@@ -86,7 +82,7 @@ func main() {
 
 	handlers.Name = name
 
-	router := setup_router()
+	router := setup_router_auth()
 	if err := router.Run(":" + config.PORT); err != nil {
 		log.Fatal(err)
 	}
