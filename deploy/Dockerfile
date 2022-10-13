@@ -35,18 +35,23 @@ RUN apk update \
 #     rm -rf /tmp/*
 RUN git clone https://github.com/franktore/go-learn.git
 RUN cd go-learn && \
-    go build -o /go/bin/go-learn
+    go build -o /go/bin/go-learn && \
+    cp -r templates/ /app/templates && \
+    cp -r assets/ /app/assets && \
+    cp README.md /app/README.md
+
+
 COPY entry_point.sh .
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY sshd_config /etc/ssh/sshd_config
 COPY creds.json /app/creds.json
-COPY prod_conf.json /app/prod_conf.json
+# COPY prod_conf.json /app/prod_conf.json
 COPY dev_conf.json /app/dev_conf.json
 
 RUN cd /etc/ssh/ && \
     ssh-keygen -A
 
-EXPOSE 80 2222
+EXPOSE 80 8080 2222
 
 RUN chmod +x entry_point.sh
 
