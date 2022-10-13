@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/franktore/go-learn/pkg/structs"
 	"github.com/gin-gonic/contrib/sessions"
@@ -42,8 +41,9 @@ func init() {
 	file, err := ioutil.ReadFile("./creds.json")
 	if err != nil {
 		log.Printf("File error: %v\n", err)
-		os.Exit(1)
+		return
 	}
+
 	if err := json.Unmarshal(file, &cred); err != nil {
 		log.Println("unable to marshal data")
 		return
