@@ -39,7 +39,7 @@ func init() {
 
 func GetConfig(params ...string) (Configuration, error) {
 	configuration := Configuration{}
-	env := "dev"
+	env := "prod"
 	// gin.SetMode(gin.ReleaseMode)
 	if len(params) > 0 {
 		env = params[0]
