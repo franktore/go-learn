@@ -82,7 +82,14 @@ func main() {
 
 	handlers.Name = name
 
-	router := setup_router_auth()
+	var router *gin.Engine
+	if _, err := os.Stat("./creds.json"); err == nil {
+		fmt.Printf("setup router with authent\n")
+		router = setup_router_auth()
+	} else {
+		fmt.Printf("setup router\n")
+		router = setup_router()
+	}
 	if err := router.Run(":" + config.PORT); err != nil {
 		log.Fatal(err)
 	}
