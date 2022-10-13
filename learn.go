@@ -20,6 +20,7 @@ import (
 const log_prefix string = "greetings: "
 
 var config = Configuration{}
+var CONFIGDIR = "./"
 
 type Configuration struct {
 	WORKDIR string
@@ -29,18 +30,23 @@ type Configuration struct {
 }
 
 func init() {
-	fmt.Println("init")
+	path, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println("WorkDir: " + path)
+
 	config, _ = GetConfig()
 }
 
 func GetConfig(params ...string) (Configuration, error) {
 	configuration := Configuration{}
-	env := "prod"
+	env := "dev"
 	// gin.SetMode(gin.ReleaseMode)
 	if len(params) > 0 {
 		env = params[0]
 	}
-	fileName := fmt.Sprintf("/etc/%s_conf.json", env)
+	fileName := fmt.Sprintf(CONFIGDIR+"%s_conf.json", env)
 	file, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Printf("File error: %v\n", err)
@@ -83,7 +89,7 @@ func main() {
 	handlers.Name = name
 
 	var router *gin.Engine
-	if _, err := os.Stat("/etc/creds.json"); err == nil {
+	if _, err := os.Stat(CONFIGDIR + "creds.json"); err == nil {
 		fmt.Printf("setup router with authent\n")
 		router = setup_router_auth()
 	} else {

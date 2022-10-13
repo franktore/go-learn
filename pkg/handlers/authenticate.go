@@ -17,6 +17,7 @@ import (
 
 var cred Credentials
 var conf *oauth2.Config
+var CONFIGDIR = "./"
 
 // Credentials which stores google ids.
 type Credentials struct {
@@ -38,7 +39,7 @@ func getLoginURL(state string) string {
 }
 
 func init() {
-	file, err := ioutil.ReadFile("/etc/creds.json")
+	file, err := ioutil.ReadFile(CONFIGDIR + "creds.json")
 	if err != nil {
 		log.Printf("File error: %v\n", err)
 		return
