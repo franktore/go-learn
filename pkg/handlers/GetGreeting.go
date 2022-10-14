@@ -13,7 +13,11 @@ import (
 var Name string = "World"
 
 func GetGreetingById(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, getMockGreeting(c))
+	content := getMockGreeting(c)
+	c.HTML(http.StatusOK, "post.tmpl.html", gin.H{
+		"Title":   "",
+		"Content": content,
+	})
 }
 
 func getMockGreeting(c *gin.Context) string {
