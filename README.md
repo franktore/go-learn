@@ -176,6 +176,7 @@ To build for specific `OS` and architecture set the go env variables like
 env GOOS=target-OS GOARCH=target-architecture
 go build package-import-path
 ```
+A windows x64 target is set with `GOOS=windows GOARCH=amd64` for mac 64-bit set `GOOS=darwin GOARCH=amd64` for 64-bit linux set `GOOS=linux GOARCH=amd64`.
 
 For more info on the where and how of installation can be found in the linked resources.
 
