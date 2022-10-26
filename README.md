@@ -212,6 +212,26 @@ func Hello(name string) (string, error) {
 Go has build-in support for unit testing.
 The package you'll want to import is called `testing`. The command you want to use is `go test`. The naming convention you'll want to use for test files is `<some>_test.go`.
 
+## <span style="color:yellow">debugging in vscode</span>
+`vscode` is a great IDE, also for developing go-projects. Recommend installing the Go extension for language support.
+
+To get going with vscode debugging quickly add the following to `launch.json`
+
+```
+    "configurations": [
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}",
+            "args": [
+              ]
+        }
+    ]
+```
+You are now ready to hit F5/Play or what ever goes on your preferred OS.
+
 ## <span style="color:yellow">compile, install and run</span>
 
 The `go run` command is a useful shortcut for compiling and running a program during development, but it doesn't create a binary executable.
