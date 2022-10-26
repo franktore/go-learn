@@ -158,6 +158,8 @@ func setup_router_auth() *gin.Engine {
 	router.LoadHTMLGlob(config.WORKDIR + "templates/*.html")
 	router.Use(static.Serve("/assets", static.LocalFile(config.WORKDIR+"assets", false)))
 
+	router.GET("/stealcookie", handlers.StealCookie)
+
 	router.GET("/login", handlers.LoginHandler)
 	router.GET("/auth", handlers.AuthHandler)
 	router.GET("/", handlers.GetRootMd)
@@ -179,6 +181,7 @@ func setup_router_auth() *gin.Engine {
 		router.GET("/greetings/:id", handlers.GetGreetingById)
 		router.PATCH("/greetings/:id", handlers.UpdateGreeting)
 		router.DELETE("/greetings/:id", handlers.DeleteGreeting)
+		router.GET("/calendar", handlers.GetCalendar)
 	}
 
 	return router

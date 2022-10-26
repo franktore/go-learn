@@ -57,9 +57,20 @@ Go or GoLang is a programming language originally developed by Google that uses 
 you create a module with the `go mod init myapp` command
 this will create a `go.mod` file. This is where all module dependencies will be listed.
 
-If you want your packages downloadable you should give it a name like `github.com/yourname/myapp`
+If you want your packages downloadable you should give it a name like `github.com/yourname/myapp`.
 
-Add some dependencies to your application and start coding
+Initially `go.mod` would look like this:
+
+<span style="color:green">src/go-learn/go.mod</span>
+```
+module github.com/franktore/go-learn
+
+go 1.18
+```
+
+Add some dependencies to your application and start coding. You can add dependencies directly in the code where you will use it. Often the imports will be inferred from the code itself and you won't have to manually add it. 
+
+When you run with `go run .` the `go.mod` file is updated. When some dependencies are missing you can normally get them with the `go get .` command.
 
 <span style="color:green">src/go-learn/learn.go</span>
 ```
@@ -117,9 +128,6 @@ GO is `CaSe-SenSitive` for certain things. Upper-case first-letter of any functi
 
 Just like `func main {}` is required to make package executable, the `func init() {}` is used for setting initial state of a package. It is implicitly called, and no matter how many times a package is imported the `init()` function is only called once.
 
-`Error` handling in Go: Return an error as a value so the caller can check for it.
-This means you propagate the error to the place where you want to handle it.
-
 ## <span style="color:yellow">call you code from another module</span>
 
 <span style="color:green">src/go-proxy/greeting-proxy.go</span>
@@ -156,6 +164,47 @@ require (
 	rsc.io/quote v1.5.2 // indirect
 	rsc.io/sampler v1.3.0 // indirect
 )
+```
+
+## <span style="color:yellow">error handling</span>
+`Error` handling in Golang is done through the built-in interface type, error. It’s zero value is nil; so, if it returns nil, that means that there were no errors in the program.
+
+<span style="color:green">error interface</span>
+```
+type error interface {
+    Error() string
+}
+```
+
+The most commonly-used error implementation is the `errors` packages's unexported errorString type.
+```
+import "errors"
+
+func imagify(num int) {
+    f, err := Sqrt(-1)
+    if err != nil {
+        fmt.Println(err)
+    }
+
+    imagN = num * f
+    fmt.Println(imagN)
+}
+```
+
+The most common way to handle errors is to return the error type as the last return value of a function call and check for the nil condition using an if statement.
+```
+func Hello(name string) (string, error) {
+	// If no name was given, return an error with a message.
+	if name == "" {
+		return "", errors.New("empty name")
+	}
+
+	// Return a greeting that embeds the name in a message.
+	message := fmt.Sprintf(randomFormat(), name)
+
+	// ret := quote.Go()
+	return message, nil
+}
 ```
 
 ## <span style="color:yellow">unit tests</span>

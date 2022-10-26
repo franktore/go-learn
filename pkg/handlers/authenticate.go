@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
@@ -85,12 +86,18 @@ func AuthHandler(c *gin.Context) {
 		c.HTML(http.StatusUnauthorized, "error.tmpl.html", gin.H{"message": "Invalid session state."})
 		return
 	}
-	code := c.Request.URL.Query().Get("code")
-	tok, err := conf.Exchange(oauth2.NoContext, code)
+
+	tokFile := "token.json"
+	tok, err := tokenFromFile(tokFile)
 	if err != nil {
-		log.Println(err)
-		c.HTML(http.StatusBadRequest, "error.tmpl.html", gin.H{"message": "Login failed. Please try again."})
-		return
+		code := c.Request.URL.Query().Get("code")
+		tok, err = conf.Exchange(oauth2.NoContext, code)
+		if err != nil {
+			log.Println(err)
+			c.HTML(http.StatusBadRequest, "error.tmpl.html", gin.H{"message": "Login failed. Please try again."})
+			return
+		}
+		saveToken(tokFile, tok)
 	}
 
 	client := conf.Client(oauth2.NoContext, tok)
@@ -146,4 +153,41 @@ func LoginHandler(c *gin.Context) {
 	}
 	link := getLoginURL(state)
 	c.HTML(http.StatusOK, "auth.tmpl.html", gin.H{"link": link})
+}
+
+// Retrieve a token, saves the token, then returns the generated client.
+func getClient(config *oauth2.Config) *http.Client {
+	// The file token.json stores the user's access and refresh tokens, and is
+	// created automatically when the authorization flow completes for the first
+	// time.
+	tokFile := "token.json"
+	tok, err := tokenFromFile(tokFile)
+	if err != nil {
+		log.Print("No token found. Please login.")
+	}
+
+	return config.Client(context.Background(), tok)
+}
+
+// Saves a token to a file path.
+func saveToken(path string, token *oauth2.Token) {
+	log.Printf("Saving credential file to: %s\n", path)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
+	if err != nil {
+		log.Fatalf("Unable to cache oauth token: %v", err)
+	}
+	defer f.Close()
+	json.NewEncoder(f).Encode(token)
+}
+
+// Retrieves a token from a local file.
+func tokenFromFile(file string) (*oauth2.Token, error) {
+	f, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	tok := &oauth2.Token{}
+	err = json.NewDecoder(f).Decode(tok)
+	return tok, err
 }

