@@ -1,5 +1,7 @@
 # ![Go](./assets/215px-Go_Logo_Blue.svg.png) LEARN
-Go or GoLang is a programming language originally developed by Google that uses high-level syntax similar to scripting languages.
+Go or GoLang is a programming language originally developed by Google that uses high-level syntax similar to scripting languages. Go is created to help in the development of multi-core, networked computers through concurrency, scalability and syntactical clearity.
+One Googles main motiviations for developing Go was to replace C with a easy-to-code, easy-to-learn, high-performance alternative.
+
 ## <span style="color:yellow">why go?</span>
 * future-proof
 * easy to learn
@@ -12,6 +14,8 @@ Go or GoLang is a programming language originally developed by Google that uses 
 * great career opportunities
 * designed for problem-solving
 
+![statistics](./assets/statistics.png)
+
 ## <span style="color:yellow">get started</span>
 * download and install go [here](https://go.dev/doc/install)
 * set GOPATH=/home/(somewhere)/golang
@@ -23,7 +27,7 @@ Go or GoLang is a programming language originally developed by Google that uses 
 * ready to code?
 * ...
 
-### <span style="color:yellow">packages and modules</span>
+## <span style="color:yellow">packages and modules</span>
 * packages form the basic building blocks of a Go program
 * packages make for re-usable units
 * modules are collections of packages
